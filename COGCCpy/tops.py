@@ -22,8 +22,18 @@ class formation_tops:
         for top in tops:
             cols = top.split('<td')
             cols = [x.strip() for x in cols if len(x) > 0]
-            formation = cols[0].split('color="Navy">')[1].split(' ')[0]
-            depth = eval(cols[1].split('<font size="2">')[1].split('</font>')[0])
+            formation = cols[0].split('color="Navy">')[1].split('</td>')[0].strip()
+            depth = cols[1].split('<font size="2">')[1].split('</font>')[0]
+
+            #Check if only a base depth
+            if len(depth) == 0:
+                depth = cols[2].split('<font size="2">')[1].split('</font>')[0]
+                if 'BASE' not in formation.upper():
+                    formation = formation + '_BASE'
+
+            if len(depth) > 0:
+                depth = eval(depth)
+
             formations[formation] = depth
         return formations
 
